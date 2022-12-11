@@ -1,0 +1,555 @@
+{
+	"info": {
+		"_postman_id": "acbb5d1e-dc0b-4ac4-8817-e504cbb9d37d",
+		"name": "api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get book",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/book?page=1&size=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"book"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get customer orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/customer/{{customer_id}}/orders?page=1&size=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"{{customer_id}}",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "size",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "insert book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Suç ve Ceza5\",\r\n    \"author\": \"Dostoyevski\",\r\n    \"quantity\": 5,\r\n    \"price\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/book/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"book",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "insert customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"customer_id\", res.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ali\",\r\n    \"surname\": \"Veli\",\r\n    \"user\":{\r\n        \"userName\": \"ali18@mail.com\",\r\n        \"password\": \"veli\"\r\n    } \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"order_id\", res.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookOrders\": [\r\n    {\r\n      \"book\": {\r\n        \"id\": 4\r\n      },\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"book\": {\r\n        \"id\": 10\r\n      },\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"customerId\": {{customer_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/statistics",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"statistics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "insert order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"order_id\", res.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookOrders\": [\r\n    {\r\n      \"book\": {\r\n        \"id\": 13\r\n      },\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"book\": {\r\n        \"id\": 12\r\n      },\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"customerId\": {{customer_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/order/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order search",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"startDate\": \"2022-12-01 00:00:00\",\r\n    \"endDate\": \"2022-12-19 00:00:00\",\r\n    \"pageRequestInfo\":{\r\n        \"page\": 0,\r\n        \"size\": \"5\"\r\n    } \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/order/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update book",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 6,\r\n    \"name\": \"Budala\",\r\n    \"author\": \"Dostoyevski\",\r\n    \"quantity\": 3,\r\n    \"price\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/book/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"book",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"access_token\", res.access_token);\r",
+							"pm.collectionVariables.set(\"refresh_token\",res.refresh_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "clientIdPassword",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzNDc2MDMsInVzZXJfbmFtZSI6ImFsaXZlbGkiLCJhdXRob3JpdGllcyI6WyJVc2VyIl0sImp0aSI6IjA2YzFhMjA4LTUwY2QtNGFiZC1hNGEzLTM3NTQ2YWM1MTExYyIsImNsaWVudF9pZCI6ImNsaWVudElkUGFzc3dvcmQiLCJzY29wZSI6WyJyZWFkIl19.PUZtlFbqrptAUHevoY8UJEnexRHKKsaYXtFjQcmu58q7_TQrwaOdB0xVMAYkWQBf_8DfhCji54iwxuyE1r6KLSg-VwNAs55IJj56KPL15HL2Fpg0TkVIGt_PUaeY12x5XwAkUKwpNkC0h9uzKNWwKmfZfysETxRtQ6USS5Zd_V7GtkydKshVc1J-JbdWhW4W9DIeq6RddF1stwZd7XtFjCPr-X3s_xl9yTa7yWDx54iDry9TOTv_IYnXm59UYUax0fT7d05VaCgxf2e-vG8K-k019AeBIQNh591NX8pLVYXoiibUGYh_VRUVvk9Qeaeotoxd72KrlF2wzSL749DgaA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "veli",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "ali",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "clientIdPassword",
+							"type": "text"
+						},
+						{
+							"key": "secret",
+							"value": "secret",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"access_token\", res.access_token);\r",
+							"pm.collectionVariables.set(\"refresh_token\",res.refresh_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "secret",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "clientIdPassword",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjUzNDc0MzAsInVzZXJfbmFtZSI6ImFsaXZlbGkiLCJhdXRob3JpdGllcyI6WyJVc2VyIl0sImp0aSI6ImY5ZTU3YzY1LTcwZjYtNDQ2OC1hYWY5LWExZWY5NTBiYjg5YyIsImNsaWVudF9pZCI6ImNsaWVudElkUGFzc3dvcmQiLCJzY29wZSI6WyJyZWFkIl19.ijAkvpT8HkWPiHZ2iSCbBP9ZIGWZkhhQ9BrLtSyqan0Cb8EcvFcs1Z_R9Fs7J2ZCwtu0V8cJrFlPg3CC9114HGSAWj_Tli0nPtBvhtMO2v67gpvA5dqyXYUFN6CDqLW6hYV5XLLRwQL_tkdChaboTL9xO57-v0pPvJQymCkbBI7Fg-uE4DvOa7dwAlNHBx5HEYeE3Z8oqaqx7ymL_XVi2Ylmc-JnpnJwJIwDvMzWSa0sARBUZLGHe3IXhtnzjDsMNUQp-TDMO5VrBKWKN0vqIA1d3jIQB2ukffY4AbIndjWKC0Fuon48abkUqH8hIFgRPHBZ0zsi7_Mh1KX4K2L-Lg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "password",
+							"value": "ali",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "veli",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "{{refresh_token}}",
+							"type": "text"
+						},
+						{
+							"key": "secret",
+							"value": "secret",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/oauth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "customer_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "order_id",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
