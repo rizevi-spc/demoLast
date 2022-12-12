@@ -12,6 +12,10 @@ and could be run from below package:
 
 ![img_5.png](additional_content/readme-img/img_5.png)
 
+swagger ui can be found at:
+
+![img.png](additional_content/readme-img/img_6.png)
+
 Postman apis are provided:
 
 ![img_1.png](additional_content/readme-img/img_1.png)
