@@ -15,12 +15,20 @@ import java.util.Optional;
 
 import static java.util.function.Predicate.not;
 
+/**
+ * controller for book stock operations
+ */
 @RestController
 @RequestMapping("/book")
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
 
+    /**
+     * get all book info as pageable request is validated
+     * @param pageRequestInfo page request
+     * @return response
+     */
     @GetMapping
     public ResponseEntity<Page<BookDto>> getAllBooks(@Valid PageRequestInfo pageRequestInfo) {
         return Optional.ofNullable(bookService.getAllBooks(pageRequestInfo))
@@ -30,6 +38,11 @@ public class BookController {
 
     }
 
+    /**
+     * insert book to db request is validated
+     * @param bookInsert request dto
+     * @return response
+     */
     @PostMapping("add")
     public ResponseEntity<BookDto> insertBook(@Valid @RequestBody BookInsert bookInsert) {
         return Optional.ofNullable(bookService.add(bookInsert))
@@ -38,6 +51,11 @@ public class BookController {
 
     }
 
+    /**
+     * update book api request is validated
+     * @param bookDto request dto
+     * @return response
+     */
     @PutMapping("update")
     public ResponseEntity<BookDto> updateBook(@Valid @RequestBody BookDto bookDto) {
         return Optional.ofNullable(bookService.update(bookDto))

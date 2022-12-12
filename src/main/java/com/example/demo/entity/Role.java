@@ -4,6 +4,10 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+
+/**
+ * Role entity
+ */
 @Entity
 @Data
 public class Role {

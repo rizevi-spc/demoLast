@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -10,14 +10,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
+/**
+ * resource server with security mappings
+ */
 @Configuration
 @EnableResourceServer
+@RequiredArgsConstructor
 public class ResourceServer extends ResourceServerConfigurerAdapter {
-
-    @Autowired
-    private TokenStore tokenStore;
+    private final TokenStore tokenStore;
     @Value("classpath:public-key")
-    Resource publicKeyResource;
+    private Resource publicKeyResource;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

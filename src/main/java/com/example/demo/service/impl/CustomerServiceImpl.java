@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 
+/**
+ * customer service implementation
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,11 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
     private final CustomerOrderRepository orderRepository;
     private final PasswordEncoder encoder;
     private final CustomerMapper customerMapper;
-
     private final CustomerOrderMapper customerOrderMapper;
 
     @Override

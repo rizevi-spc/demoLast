@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.function.Function;
 
+/**
+ * custom validatin exception for message handling
+ */
 @Getter
 public class CustomValidationException extends RuntimeException {
     private Object methodVal;

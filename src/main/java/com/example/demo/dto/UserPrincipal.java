@@ -1,7 +1,5 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
-import com.example.demo.dto.RoleDto;
-import com.example.demo.dto.UserDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * user principal for user details service
+ */
 public class UserPrincipal implements UserDetails {
     private final UserDto user;
 

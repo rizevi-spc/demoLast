@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * order jpa repository
+ */
 @Repository
 public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
     Page<CustomerOrder> findCustomerOrderByCustomer_Id(Long customerId, Pageable pageable);
@@ -19,7 +22,7 @@ public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Lo
 
     @Query("select new com.example.demo.dto.OrderStatistics(" +
             "month(customerOrder.createDateTime), " +
-            "count(customerOrder), " +
+            "count(distinct customerOrder), " +
             "sum(bookOrder.quantity), " +
             "sum(customerOrder.price)) " +
             "from CustomerOrder customerOrder join customerOrder.bookOrders bookOrder " +

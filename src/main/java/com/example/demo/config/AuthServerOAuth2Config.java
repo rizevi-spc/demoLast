@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
 import com.example.demo.service.impl.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,20 +18,24 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+/**
+ * oauth2 and jwt configuration
+ */
 @Configuration
 @EnableAuthorizationServer
+@RequiredArgsConstructor
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
-
-    @Autowired
     @Qualifier("authenticationManagerBean")
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
+
+    private final CustomUserDetailsService userDetailsService;
+
+    private final PasswordEncoder passwordEncoder;
     @Value("classpath:jwt.jks")
-    Resource jwtKeyPairResource;
+    private Resource jwtKeyPairResource;
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
@@ -44,12 +48,8 @@ public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter
                 .refreshTokenValiditySeconds(30 * 60);
     }
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.tokenStore(tokenStore()).userDetailsService(userDetailsService).accessTokenConverter(tokenEnhancer())
                 .authenticationManager(authenticationManager);
     }

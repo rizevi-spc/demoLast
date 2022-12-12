@@ -5,6 +5,9 @@ import com.example.demo.entity.CustomerOrder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+/**
+ * order mapper for dto entity mapping
+ */
 @Mapper(componentModel = "spring", uses = {BookOrderMapper.class, CustomerMapper.class})
 public interface CustomerOrderMapper {
     @Mapping(target = "customerId", source = "customer.id")

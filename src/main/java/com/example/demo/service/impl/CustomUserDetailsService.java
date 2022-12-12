@@ -7,11 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.example.demo.entity.UserPrincipal;
+import com.example.demo.dto.UserPrincipal;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+/**
+ * user detail service implementation for authentication
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional

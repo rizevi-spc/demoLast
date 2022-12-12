@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.validation.constraints.Positive;
 
+/**
+ * book dto object
+ */
 @Data
 public class BookDto extends SimpleBookDto {
     @Positive(message = "{valid.negative.error}")

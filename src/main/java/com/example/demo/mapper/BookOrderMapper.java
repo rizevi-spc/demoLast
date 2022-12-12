@@ -8,6 +8,9 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
+/**
+ * book order mapper for dto entity mapping
+ */
 @Mapper(componentModel = "spring", uses = BookMapper.class)
 public interface BookOrderMapper {
     @Mapping(target = "book", source = "book", qualifiedByName = "toSimple")

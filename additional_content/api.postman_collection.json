@@ -52,7 +52,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/customer/{{customer_id}}/orders?page=1&size=1",
+					"raw": "http://localhost:8080/customer/{{customer_id}}/orders?page=0&size=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -66,7 +66,7 @@
 					"query": [
 						{
 							"key": "page",
-							"value": "1"
+							"value": "0"
 						},
 						{
 							"key": "size",
@@ -166,8 +166,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var res = JSON.parse(responseBody);\r",
-							"pm.collectionVariables.set(\"order_id\", res.id);"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -209,6 +208,56 @@
 			"response": []
 		},
 		{
+			"name": "order get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"order_id\", res.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookOrders\": [\r\n    {\r\n      \"book\": {\r\n        \"id\": 4\r\n      },\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"book\": {\r\n        \"id\": 10\r\n      },\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"customerId\": {{customer_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/order/{{order_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"order",
+						"{{order_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "insert order",
 			"event": [
 				{
@@ -233,7 +282,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"bookOrders\": [\r\n    {\r\n      \"book\": {\r\n        \"id\": 13\r\n      },\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"book\": {\r\n        \"id\": 12\r\n      },\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"customerId\": {{customer_id}}\r\n}",
+					"raw": "{\r\n  \"bookOrders\": [\r\n    {\r\n      \"book\": {\r\n        \"id\": 8\r\n      },\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"book\": {\r\n        \"id\": 6\r\n      },\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"customerId\": {{customer_id}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * book stock entity
+ */
 @Entity
 @Data
 public class BookStock {
@@ -14,6 +17,6 @@ public class BookStock {
     private Long version;
     private String name;
     private String author;
-    private Long quantity;
-    private Double price;
+    private long quantity;
+    private double price;
 }

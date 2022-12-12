@@ -4,6 +4,9 @@ import com.example.demo.entity.BookStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * book stock jpa repository
+ */
 @Repository
 public interface BookRepository extends JpaRepository<BookStock, Long> {
 }

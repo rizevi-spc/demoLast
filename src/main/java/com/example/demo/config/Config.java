@@ -1,49 +1,70 @@
 package com.example.demo.config;
 
 
-import com.example.demo.entity.Role;
-import com.example.demo.entity.User;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.EventListener;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.auditing.CurrentDateTimeProvider;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Collections;
-
+/**
+ * general configuration class
+ */
 @Configuration
 @EnableJpaAuditing(dateTimeProviderRef = "dateAuditProvider")
 @RequiredArgsConstructor
+@EnableSwagger2
 public class Config {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder encoder;
+    /**
+     * to auto persist date to db
+     */
     @Bean
     @Qualifier(value = "dateAuditProvider")
     public CurrentDateTimeProvider dateAuditProvider() {
         return CurrentDateTimeProvider.INSTANCE;
     }
 
-    @EventListener
-    public void afterInit(ApplicationReadyEvent event) {
-        Role role = new Role();
-        role.setName("Admin");
-        Role roleCustomer = new Role();
-        role.setName("Customer");
-        final Role admin = roleRepository.save(role);
-        roleRepository.save(roleCustomer);
-        User user = new User();
-        user.setUserName("ali");
-        user.setPassword(encoder.encode("veli"));
-        user.setRoles(Collections.singletonList(admin));
+    /**
+     * messagesource config
+     */
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        return messageSource;
+    }
 
-        userRepository.save(user);
+    /**
+     * message source validation messages integration
+     */
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
+    }
+
+    /**
+     * swagger config
+     */
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
     }
 
 }

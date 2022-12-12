@@ -4,13 +4,12 @@ import com.example.demo.aspect.annotation.Logging;
 import com.example.demo.dto.CustomerOrderDto;
 import com.example.demo.dto.OrderSearchRequest;
 import com.example.demo.dto.OrderStatistics;
-import com.example.demo.entity.BookStock;
 import com.example.demo.entity.BookOrder;
+import com.example.demo.entity.BookStock;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.CustomerOrder;
 import com.example.demo.enumeration.ORDER_STATUS;
 import com.example.demo.exception.CustomValidationException;
-import com.example.demo.mapper.BookOrderMapper;
 import com.example.demo.mapper.CustomerOrderMapper;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.CustomerOrderRepository;
@@ -18,6 +17,7 @@ import com.example.demo.repository.CustomerRepository;
 import com.example.demo.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * customer order service implementation
+ */
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -34,13 +37,12 @@ public class OrderServiceImpl implements OrderService {
     private final CustomerRepository customerRepository;
     private final BookRepository bookRepository;
     private final CustomerOrderMapper customerOrderMapper;
-    private final BookOrderMapper bookOrderMapper;
 
     @Override
     @Logging
     public CustomerOrderDto add(CustomerOrderDto customerDto) {
         if (CollectionUtils.isEmpty(customerDto.getBookOrders())) {
-            new CustomValidationException("valid.book.orders.empty");
+           throw new CustomValidationException("valid.book.orders.empty");
         }
         final Customer customer = Optional.ofNullable(customerDto)
                 .map(CustomerOrderDto::getCustomerId)
@@ -52,17 +54,22 @@ public class OrderServiceImpl implements OrderService {
         final CustomerOrder customerOrder = customerOrderMapper.toEntity(customerDto);
         customerOrder.setCustomer(customer);
         final double orderPrice = customerOrder.getBookOrders().stream()
+                .filter(Objects::nonNull)
                 .peek(this::getAndUpdateBook)
                 .mapToDouble(bookOrder -> bookOrder.getQuantity() * bookOrder.getPrice())
                 .sum();
         customerOrder.setPrice(orderPrice);
 
         customerOrder.setStatus(ORDER_STATUS.ACTIVE);
-        return customerOrderMapper.toDTO(orderRepository.save(customerOrder));
+        try {
+            return customerOrderMapper.toDTO(orderRepository.save(customerOrder));
+        } catch (OptimisticLockingFailureException e) {
+            throw new CustomValidationException("valid.book.stock.out.date");
+        }
     }
 
     private void getAndUpdateBook(BookOrder bookOrder) {
-        final BookStock bookStock = Optional.ofNullable(bookOrder)
+        final BookStock bookStock = Optional.of(bookOrder)
                 .map(BookOrder::getBook)
                 .map(BookStock::getId)
                 .flatMap(bookRepository::findById)

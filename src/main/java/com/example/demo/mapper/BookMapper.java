@@ -10,6 +10,9 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
+/**
+ * book mapper for dto entity mapping
+ */
 @Mapper(componentModel = "spring")
 public interface BookMapper {
     BookDto toDTO(BookStock bookStock);

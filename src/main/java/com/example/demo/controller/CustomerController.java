@@ -15,13 +15,18 @@ import java.util.Optional;
 
 import static java.util.function.Predicate.not;
 
+/**
+ * customer controller
+ */
 @RestController
 @RequestMapping("/customer")
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
 
-
+    /**
+     * insert customer
+     */
     @PostMapping("add")
     public ResponseEntity<CustomerDto> insertCustomer(@Valid @RequestBody CustomerDto customerDto) {
         return Optional.ofNullable(customerService.add(customerDto))
@@ -30,6 +35,9 @@ public class CustomerController {
 
     }
 
+    /**
+     * get customer orders
+     */
     @GetMapping("{customerId}/orders")
     public ResponseEntity<Page<CustomerOrderDto>> getCustomerOrders(@PathVariable Long customerId,
                                                                     @Valid PageRequestInfo pageRequestInfo) {

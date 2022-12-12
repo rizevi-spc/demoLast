@@ -3,16 +3,21 @@ package com.example.demo.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 
+/**
+ * book order entity
+ */
 @Entity
 @Data
 public class BookOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long quantity;
+    @Positive(message = "{valid.negative.error}")
+    private long quantity;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name="book_id")
     private BookStock book;
-    private Double price;
+    private double price;
 }

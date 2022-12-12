@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.aspect.annotation.Logging;
 
+/**
+ * to add error and info log to methods
+ */
 @Aspect
 @Slf4j
 public class LoggingAspect {

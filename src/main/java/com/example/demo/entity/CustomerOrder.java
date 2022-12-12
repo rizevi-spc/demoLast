@@ -10,6 +10,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * customer order entity
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Data

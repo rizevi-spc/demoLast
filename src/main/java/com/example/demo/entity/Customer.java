@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * customer entity
+ */
 @Entity
 @Data
 public class Customer {
