@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.error;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-public class ApiResponse implements Serializable {
+public class ApiErrorResponse implements Serializable {
     private int status;
     private String message;
     private Object result;

@@ -1,6 +1,7 @@
 package com.example.demo.aspect;
 
-import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.error.ApiErrorResponse;
+import com.example.demo.dto.error.FieldValidationError;
 import com.example.demo.exception.CustomValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +32,9 @@ public class ExceptionAdvice {
     static AtomicInteger atom = new AtomicInteger(0);
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleException(Exception ex) {
+    public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
         long id = generateErrorId();
-        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(String.format("Internal Server Error id: %d", id))
                 .build();
 
@@ -42,16 +43,16 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ApiResponse> handleException(BindException ex) {
+    public ResponseEntity<ApiErrorResponse> handleException(BindException ex) {
         long id = generateErrorId();
 
-        ApiResponse apiResponse = ApiResponse.<List<String>>builder().status(HttpStatus.BAD_REQUEST.value())
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
                 .message(String.format("Validation Error id: %d", id))
                 .result(ex.getAllErrors()
                         .stream()
                         .filter(FieldError.class::isInstance)
                         .map(FieldError.class::cast)
-                        .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                        .map(fieldError -> FieldValidationError.of(fieldError.getField(), fieldError.getDefaultMessage()))
                         .collect(Collectors.toList()))
                 .build();
 
@@ -60,10 +61,10 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(CustomValidationException.class)
-    public ResponseEntity<ApiResponse> handleException(CustomValidationException ex) {
+    public ResponseEntity<ApiErrorResponse> handleException(CustomValidationException ex) {
         long id = generateErrorId();
 
-        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.BAD_REQUEST.value())
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
                 .message(String.format("Custom Validation Error id: %d", id))
                 .result(getMessage(ex, Optional.ofNullable(ex.getMethodVal())
                         .orElse(null)))
@@ -74,10 +75,10 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ApiResponse> handleException(MissingServletRequestParameterException ex) {
+    public ResponseEntity<ApiErrorResponse> handleException(MissingServletRequestParameterException ex) {
         long id = generateErrorId();
 
-        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.BAD_REQUEST.value())
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
                 .message(String.format("Missing Request Parameter Error id: %d", id))
                 .result(ex.getParameterName())
                 .build();
@@ -87,10 +88,10 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse> handleException(DataIntegrityViolationException ex) {
+    public ResponseEntity<ApiErrorResponse> handleException(DataIntegrityViolationException ex) {
         long id = generateErrorId();
 
-        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.BAD_REQUEST.value())
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value())
                 .message(String.format("Unique contraint exception id: %d", id))
                 .build();
 

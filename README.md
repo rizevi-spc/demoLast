@@ -16,13 +16,15 @@ swagger ui can be found at:
 
 ![img.png](additional_content/readme-img/img_6.png)
 
-Postman apis are provided:
+Postman apis dbdump and api_documentation are 
+provided inside project folder additional content:
 
 ![img_1.png](additional_content/readme-img/img_1.png)
 
 ![img.png](additional_content/readme-img/img.png)
 
-auth access api should be called and then access_token and refresh_token variables will be set on collecion level
+auth access api should be called and then access_token 
+and refresh_token variables will be set on collecion level
 
 ![img_2.png](additional_content/readme-img/img_2.png)
 
@@ -33,3 +35,11 @@ insert customer can be used to insert customer customer_id variable will be set 
 insert order can be used after books and customer are created customer_id will be ready on request body ids inside book 
 should be set according to inserted book ids (ids can be seen insert book response after inserted or from get book api all books can be fetched)
 after datas are created by insertion apis put and get apis can be called according to inserted data
+
+Field validations will be based on annotated DTO validations can be clearly 
+
+![img.png](additional_content/readme-img/img_7.png)
+
+Validations can be seen on DTO objects like below
+
+![img_1.png](additional_content/readme-img/img_8.png)
