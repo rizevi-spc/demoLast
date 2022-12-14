@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * book stock jpa repository
  */
 @Repository
-public interface BookRepository extends JpaRepository<BookStock, Long> {
+public interface BookRepository extends JpaRepository<BookStock, Long>, DynamicBookRepository {
 }

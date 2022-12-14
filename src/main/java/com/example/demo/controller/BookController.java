@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.BookInsert;
+import com.example.demo.dto.BookSearchRequest;
 import com.example.demo.dto.PageRequestInfo;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,20 @@ public class BookController {
     @GetMapping
     public ResponseEntity<Page<BookDto>> getAllBooks(@Valid PageRequestInfo pageRequestInfo) {
         return Optional.ofNullable(bookService.getAllBooks(pageRequestInfo))
+                .filter(not(Streamable::isEmpty))
+                .map(ResponseEntity::ok)
+                .orElseGet(ResponseEntity.noContent()::build);
+
+    }
+
+    /**
+     * search all book info as pageable request is validated
+     * @param pageRequestInfo page request
+     * @return response
+     */
+    @PostMapping("search")
+    public ResponseEntity<Page<BookDto>> searchAllBooks(@Valid @RequestBody BookSearchRequest pageRequestInfo) {
+        return Optional.ofNullable(bookService.searchBooks(pageRequestInfo))
                 .filter(not(Streamable::isEmpty))
                 .map(ResponseEntity::ok)
                 .orElseGet(ResponseEntity.noContent()::build);

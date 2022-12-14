@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.aspect.annotation.Logging;
 import com.example.demo.dto.BookDto;
 import com.example.demo.dto.BookInsert;
+import com.example.demo.dto.BookSearchRequest;
 import com.example.demo.dto.PageRequestInfo;
 import com.example.demo.entity.BookStock;
 import com.example.demo.exception.CustomValidationException;
@@ -30,6 +31,13 @@ public class BookServiceImpl implements BookService {
     @Logging
     public Page<BookDto> getAllBooks(PageRequestInfo pageRequestInfo) {
         return bookRepository.findAll(pageRequestInfo.getPageRequest()).map(bookMapper::toDTO);
+    }
+
+    @Override
+    @Logging
+    public Page<BookDto> searchBooks(BookSearchRequest bookSearchRequest) {
+        return bookRepository.searchBooks(bookSearchRequest , bookSearchRequest.getPageRequestInfo())
+                .map(bookMapper::toDTO);
     }
 
     @Override
