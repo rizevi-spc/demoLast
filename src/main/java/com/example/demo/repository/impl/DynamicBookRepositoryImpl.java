@@ -15,7 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -28,14 +30,20 @@ public class DynamicBookRepositoryImpl implements DynamicBookRepository {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<BookStock> query = criteriaBuilder.createQuery(BookStock.class);
         final Root<BookStock> from = query.from(BookStock.class);
-        final Predicate predicate = criteriaBuilder.and(criteriaBuilder.like(from.get("name"),
-                        request.getName() + "%"),
-                criteriaBuilder.like(from.get("author"), request.getAuthor() + "%"));
-        query.where(predicate);
+
+        final List<Predicate> predicates = new ArrayList<>();
+        Optional.ofNullable(request.getName())
+                .ifPresent(name -> predicates.add(criteriaBuilder.like(from.get("name"), request.getName() + "%")));
+
+        Optional.ofNullable(request.getAuthor())
+                .ifPresent(name -> predicates.add(criteriaBuilder.like(from.get("author"), request.getAuthor() + "%")));
+
+        final Predicate allPredicates = criteriaBuilder.and(predicates.toArray(Predicate[]::new));
+        query.where(allPredicates);
         final List<BookStock> resultList = entityManager.createQuery(query)
                 .setFirstResult(pageRequestInfo.getPage())
                 .setMaxResults(pageRequestInfo.getSize()).getResultList();
-        return new PageImpl<>(resultList, pageRequestInfo.getPageRequest(), getQueryCount(criteriaBuilder, predicate));
+        return new PageImpl<>(resultList, pageRequestInfo.getPageRequest(), getQueryCount(criteriaBuilder, allPredicates));
     }
 
     private Long getQueryCount(CriteriaBuilder criteriaBuilder, Predicate likeName) {
