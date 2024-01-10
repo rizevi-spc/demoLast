@@ -4,13 +4,14 @@ import com.example.demo.dto.CustomerDto;
 import com.example.demo.dto.CustomerOrderDto;
 import com.example.demo.dto.PageRequestInfo;
 import com.example.demo.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.util.Optional;
 
 import static java.util.function.Predicate.not;

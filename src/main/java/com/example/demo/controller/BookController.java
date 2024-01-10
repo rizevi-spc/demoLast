@@ -5,13 +5,15 @@ import com.example.demo.dto.BookInsert;
 import com.example.demo.dto.BookSearchRequest;
 import com.example.demo.dto.PageRequestInfo;
 import com.example.demo.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.util.Streamable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
+import java.security.Principal;
 import java.util.Optional;
 
 import static java.util.function.Predicate.not;
@@ -31,7 +33,7 @@ public class BookController {
      * @return response
      */
     @GetMapping
-    public ResponseEntity<Page<BookDto>> getAllBooks(@Valid PageRequestInfo pageRequestInfo) {
+    public ResponseEntity<Page<BookDto>> getAllBooks(@Valid PageRequestInfo pageRequestInfo, Principal principal) {
         return Optional.ofNullable(bookService.getAllBooks(pageRequestInfo))
                 .filter(not(Streamable::isEmpty))
                 .map(ResponseEntity::ok)

@@ -15,7 +15,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,17 +29,6 @@ import java.util.stream.Collectors;
 public class ExceptionAdvice {
     private final MessageSource messageSource;
     static AtomicInteger atom = new AtomicInteger(0);
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
-        long id = generateErrorId();
-        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(String.format("Internal Server Error id: %d", id))
-                .build();
-
-        log.error("Error id:{}", id, ex);
-        return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ApiErrorResponse> handleException(BindException ex) {
@@ -97,6 +85,17 @@ public class ExceptionAdvice {
 
         log.error("Error id:{}", id, ex);
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleException(Exception ex) {
+        long id = generateErrorId();
+        ApiErrorResponse apiResponse = ApiErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(String.format("Internal Server Error id: %d", id))
+                .build();
+
+        log.error("Error id:{}", id, ex);
+        return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getMessage(RuntimeException ex, Object... params) {

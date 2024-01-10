@@ -29,7 +29,9 @@ class BookControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     @Test
+    @Order(2)
     void test_book_insert_then_ok() throws Exception {
         final BookInsert bookInsert = new BookInsert();
         bookInsert.setName("Budala");
@@ -43,6 +45,7 @@ class BookControllerTest {
     }
 
     @Test
+    @Order(1)
     void test_book_update_then_bad_request() throws Exception {
         final BookDto book = new BookDto();
         book.setName("Budala");

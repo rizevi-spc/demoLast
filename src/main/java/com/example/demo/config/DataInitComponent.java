@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,16 +25,16 @@ public class DataInitComponent {
      */
     @EventListener
     public void afterInit(ApplicationReadyEvent event) {
-        Role role = new Role();
-        role.setName("Admin");
-        Role roleCustomer = new Role();
-        role.setName("Customer");
-        final Role admin = roleRepository.save(role);
-        roleRepository.save(roleCustomer);
+        Role admin = new Role();
+        admin.setName("ADMIN");
+        Role customer = new Role();
+        customer.setName("Customer");
+        roleRepository.save(admin);
+        roleRepository.save(customer);
         User user = new User();
         user.setUserName("ali");
         user.setPassword(encoder.encode("veli"));
-        user.setRoles(Collections.singletonList(admin));
+        user.setRoles(List.of(admin, customer));
 
         userRepository.save(user);
     }

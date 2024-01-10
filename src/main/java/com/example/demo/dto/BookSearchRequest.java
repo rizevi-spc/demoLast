@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import lombok.Data;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Data
 public class BookSearchRequest {

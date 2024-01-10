@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Positive;
 
 /**
  * book dto object

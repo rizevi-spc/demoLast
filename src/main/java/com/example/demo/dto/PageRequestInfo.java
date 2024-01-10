@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.Positive;
 import java.io.Serializable;
 
 /**

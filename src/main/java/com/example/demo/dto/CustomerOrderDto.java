@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

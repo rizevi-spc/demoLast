@@ -2,8 +2,8 @@ package com.example.demo.entity;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.Positive;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 
 /**
  * book order entity
