@@ -2,3 +2,6 @@
 logs
 target
 demo.iml
+demo-commons.iml
+demo-backend.iml
+demo-authorization-server.iml
